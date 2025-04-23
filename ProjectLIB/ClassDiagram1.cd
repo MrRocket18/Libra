@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ProjectLIB.Book">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAQEAAQAEAAgAAAAAAAAAAAkAgQAEAAAAAAAAA=</HashCode>
+      <FileName>Book.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProjectLIB.BooksInteraction">
+    <Position X="6.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBAAQAAACAAQAQAABAAAAAIAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>BooksInteraction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProjectLIB.DB">
+    <Position X="8.5" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAABAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProjectLIB.User">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAEAAAAAQAAAAEAEAAAQAAAAAAAACAABQAAIAAEA=</HashCode>
+      <FileName>User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
