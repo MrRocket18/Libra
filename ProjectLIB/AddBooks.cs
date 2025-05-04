@@ -44,35 +44,35 @@ namespace ProjectLIB
         {
             try
             {
-                string title = titletextBox.Text;
-                string author = authortextBox.Text;
-                string place = placetextBox.Text;
+                string title = titletextBox.Text; //1
+                string author = authortextBox.Text; //1
+                string place = placetextBox.Text; //1
 
 
-                int year = int.Parse(yeartextBox.Text);
-                int count = int.Parse(counttextBox.Text);
+                int year = int.Parse(yeartextBox.Text); //1 
+                int count = int.Parse(counttextBox.Text); //1
 
-                Selector select = new Selector();
+                Selector select = new Selector(); 
                 BooksInteraction books = new BooksInteraction();
                 select.ShowDialog();
-                if (select.status)
+                if (select.status) //2
                 {
-                    List<int> IDs = books.AddBooks(title, author, place, count, year, select.FacultyId, select.SpecialtyId, select.SubjectId);
-                    if (IDs.Count != 0)
+                    List<int> IDs = books.AddBooks(title, author, place, count, year, select.FacultyId, select.SpecialtyId, select.SubjectId); //3
+                    if (IDs.Count != 0) //4
                     {
-                        string message = "Книги успешно добавлены! ID добавленных книг:\n" + string.Join(", ", IDs);
+                        string message = "Книги успешно добавлены! ID добавленных книг:\n" + string.Join(", ", IDs); //5
                         MessageBox.Show(message, "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    this.Close();
+                    this.Close();//6
                 }
             }
             catch (FormatException)
             {
-                MessageBox.Show("Пожалуйста, введите корректные значения для года и количества (целые числа).", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Пожалуйста, введите корректные значения для года и количества (целые числа).", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); //7
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); //8
             } 
 
         }
