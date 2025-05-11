@@ -186,11 +186,6 @@ namespace ProjectLIB
                 SetDropDownWidth(subjectsСomboBox);
             }
         }
-
-        private void subjectsСomboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
         private void SetDropDownWidth(ComboBox comboBox)
         {
             int maxWidth = 0;
