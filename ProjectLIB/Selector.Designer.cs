@@ -67,7 +67,7 @@ namespace ProjectLIB
             this.subjectsСomboBox.Name = "subjectsСomboBox";
             this.subjectsСomboBox.Size = new System.Drawing.Size(528, 37);
             this.subjectsСomboBox.TabIndex = 2;
-            this.subjectsСomboBox.SelectedIndexChanged += new System.EventHandler(this.subjectsСomboBox_SelectedIndexChanged);
+      
             // 
             // label1
             // 

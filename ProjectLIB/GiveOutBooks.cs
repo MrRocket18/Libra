@@ -33,16 +33,16 @@ namespace ProjectLIB
                 int readerID = int.Parse(IDReaderTextBox.Text);
                 for (int i = 1; i <= _books.Count; i++)
                 {
-                    if(givebooks.IssueBook(_books[i-1], readerID))
+                    if (givebooks.IssueBook(_books[i - 1], readerID))
                     {
                         Book book_info = new Book();
                         User user_info = new User();
                         book_info = book_info.GetBookById(_books[i - 1]);
                         (string full_name, string group) = user_info.GetFullNameAndGroupById(readerID);
                         string message = $"Книга\n ID: {book_info.BookId}\n Название: {book_info.Title}\n Автор: {book_info.Author}\n Год выпуска: {book_info.PublicationYear}\n" +
-                            $"Была выдана читателю: {full_name} из группы {group}";  
+                            $"Была выдана читателю: {full_name} из группы {group}";
                         MessageBox.Show(message, "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        
+
                     }
                 }
                 this.Close();

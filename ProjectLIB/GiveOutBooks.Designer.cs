@@ -40,9 +40,10 @@ namespace ProjectLIB
             // 
             this.GiveOutBooksLabel.AutoSize = true;
             this.GiveOutBooksLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.GiveOutBooksLabel.Location = new System.Drawing.Point(311, 51);
+            this.GiveOutBooksLabel.Location = new System.Drawing.Point(415, 63);
+            this.GiveOutBooksLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.GiveOutBooksLabel.Name = "GiveOutBooksLabel";
-            this.GiveOutBooksLabel.Size = new System.Drawing.Size(145, 24);
+            this.GiveOutBooksLabel.Size = new System.Drawing.Size(186, 29);
             this.GiveOutBooksLabel.TabIndex = 0;
             this.GiveOutBooksLabel.Text = "Выдача книги";
             // 
@@ -50,9 +51,10 @@ namespace ProjectLIB
             // 
             this.BackButton.BackColor = System.Drawing.Color.Red;
             this.BackButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BackButton.Location = new System.Drawing.Point(70, 365);
+            this.BackButton.Location = new System.Drawing.Point(93, 449);
+            this.BackButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BackButton.Name = "BackButton";
-            this.BackButton.Size = new System.Drawing.Size(95, 57);
+            this.BackButton.Size = new System.Drawing.Size(127, 70);
             this.BackButton.TabIndex = 1;
             this.BackButton.Text = "Отмена";
             this.BackButton.UseVisualStyleBackColor = false;
@@ -62,9 +64,10 @@ namespace ProjectLIB
             // 
             this.GiveOutBooksbutton.BackColor = System.Drawing.Color.Chartreuse;
             this.GiveOutBooksbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.GiveOutBooksbutton.Location = new System.Drawing.Point(604, 365);
+            this.GiveOutBooksbutton.Location = new System.Drawing.Point(805, 449);
+            this.GiveOutBooksbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GiveOutBooksbutton.Name = "GiveOutBooksbutton";
-            this.GiveOutBooksbutton.Size = new System.Drawing.Size(127, 58);
+            this.GiveOutBooksbutton.Size = new System.Drawing.Size(169, 71);
             this.GiveOutBooksbutton.TabIndex = 2;
             this.GiveOutBooksbutton.Text = "Выдать книгу";
             this.GiveOutBooksbutton.UseVisualStyleBackColor = false;
@@ -74,31 +77,34 @@ namespace ProjectLIB
             // 
             this.IdReaderLabel.AutoSize = true;
             this.IdReaderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.IdReaderLabel.Location = new System.Drawing.Point(66, 201);
+            this.IdReaderLabel.Location = new System.Drawing.Point(88, 247);
+            this.IdReaderLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.IdReaderLabel.Name = "IdReaderLabel";
-            this.IdReaderLabel.Size = new System.Drawing.Size(114, 24);
+            this.IdReaderLabel.Size = new System.Drawing.Size(151, 29);
             this.IdReaderLabel.TabIndex = 3;
             this.IdReaderLabel.Text = "ID читателя";
             // 
             // IDReaderTextBox
             // 
             this.IDReaderTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.IDReaderTextBox.Location = new System.Drawing.Point(253, 201);
+            this.IDReaderTextBox.Location = new System.Drawing.Point(337, 247);
+            this.IDReaderTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.IDReaderTextBox.Name = "IDReaderTextBox";
-            this.IDReaderTextBox.Size = new System.Drawing.Size(310, 29);
+            this.IDReaderTextBox.Size = new System.Drawing.Size(412, 34);
             this.IDReaderTextBox.TabIndex = 4;
             // 
             // GiveOutBooks
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.IDReaderTextBox);
             this.Controls.Add(this.IdReaderLabel);
             this.Controls.Add(this.GiveOutBooksbutton);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.GiveOutBooksLabel);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "GiveOutBooks";
             this.Text = "GiveOutBooks";
             this.ResumeLayout(false);
@@ -112,6 +118,6 @@ namespace ProjectLIB
         private System.Windows.Forms.Button BackButton;
         private System.Windows.Forms.Button GiveOutBooksbutton;
         private System.Windows.Forms.Label IdReaderLabel;
-        private System.Windows.Forms.TextBox IDReaderTextBox;
+        public System.Windows.Forms.TextBox IDReaderTextBox;
     }
 }
