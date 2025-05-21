@@ -45,7 +45,7 @@ namespace UnitTestProjectLIB
         public void DeleteBook_NonExistingBook_ReturnsFalse()
         {
             // Arrange
-            int nonExistingBookId = 999999; // ID книги, которой гарантированно нет в базе данных
+            int nonExistingBookId = 999999; 
             BooksInteraction booksInteraction = new BooksInteraction();
             PrivateObject privateObject = new PrivateObject(booksInteraction);
             privateObject.SetField("db", realDb);
@@ -61,7 +61,7 @@ namespace UnitTestProjectLIB
         public void DeleteBook_InvalidBookId_ReturnsFalse()
         {
             // Arrange
-            int invalidBookId = 0; // Недопустимый ID книги
+            int invalidBookId = 0; 
             BooksInteraction booksInteraction = new BooksInteraction();
             PrivateObject privateObject = new PrivateObject(booksInteraction);
             privateObject.SetField("db", realDb);
@@ -75,35 +75,35 @@ namespace UnitTestProjectLIB
 
 
         [TestMethod]
-        [ExpectedException(typeof(MySqlException))] // Ожидаем исключение MySqlException
+        [ExpectedException(typeof(MySqlException))] 
         public void DeleteBook_DatabaseConnectionError_ReturnsFalse()
         {
             // Arrange
-            // Создаем BooksInteraction
+          
             BooksInteraction booksInteraction = new BooksInteraction();
             PrivateObject privateObject = new PrivateObject(booksInteraction);
 
-            // Устанавливаем поддельное соединение, которое вызовет ошибку
+           
             DB fakeDb = new DB();
-            // **Исправленная строка подключения:  Соответствует формату, но с неверными данными**
+           
             fakeDb.connectionString = "Server=localhost;Database=NonExistentDatabase;Uid=testuser;Pwd=testpassword;";
             privateObject.SetField("db", fakeDb);
 
             // Act
-            // **Добавлено: Явно пытаемся открыть соединение, чтобы вызвать исключение**
+            
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(fakeDb.connectionString))
                 {
-                    connection.Open(); // Попытка открыть соединение с неверной строкой подключения
+                    connection.Open(); 
                 }
-                booksInteraction.DeleteBook(1); // Вызываем DeleteBook с любым ID
+                booksInteraction.DeleteBook(1); 
             }
             catch (MySqlException)
             {
                 // Assert
-                // Если исключение было выброшено, тест пройдет здесь. [ExpectedException] проверит тип исключения
-                throw;  //Re-throw чтобы [ExpectedException] мог поймать
+                
+                throw;  
             }
         }
 

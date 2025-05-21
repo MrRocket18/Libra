@@ -109,6 +109,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MenuLib.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuLib.Designer.cs">
+      <DependentUpon>MenuLib.cs</DependentUpon>
+    </Compile>
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -121,6 +127,11 @@
       <Project>{0288ab09-c62a-4e1a-8d66-1ef6253298db}</Project>
       <Name>ProjectLIB</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MenuLib.resx">
+      <DependentUpon>MenuLib.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
