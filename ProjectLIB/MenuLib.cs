@@ -239,20 +239,21 @@ namespace ProjectLIB
 
         private void EditBookDataButton_Click(object sender, EventArgs e)
         {
-            List<int> selectedBookIds = GetSelectedBookIds();
+            List<int> selectedBookIds = GetSelectedBookIds(); //1
             
-                if (selectedBookIds.Count > 0)
+                if (selectedBookIds.Count > 0) //2
                 {
-                    if (AreBooksIdenticalOptimized(selectedBookIds))
+                    if (AreBooksIdenticalOptimized(selectedBookIds)) //3
                     {
                         ChooseWay way = new ChooseWay(selectedBookIds);
-                        way.ShowDialog();
-                        LoadData();
+                        way.ShowDialog(); //4
+                        
                     }
+                    LoadData();//5
                 }
                 else
                 {
-                    MessageBox.Show("Не выбрано ни одной книги.");
+                    MessageBox.Show("Не выбрано ни одной книги."); //6
                 }
             
         }
