@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 
 namespace ProjectLIB
 {
     public partial class GiveOutBooks : Form
     {
-        public List<int> _books = null;
+        private List<int> _books = null;
+        private DB _db = new DB();
         public GiveOutBooks(List <int> books)
         {
             InitializeComponent();
@@ -27,25 +30,72 @@ namespace ProjectLIB
 
         private void GiveOutBooksbutton_Click(object sender, EventArgs e)
         {
-            BooksInteraction givebooks = new BooksInteraction();
+
             try
             {
-                int readerID = int.Parse(IDReaderTextBox.Text);
-                for (int i = 1; i <= _books.Count; i++)
+                bool operationSuccessful = false;
+                int userId = int.Parse(IDReaderTextBox.Text.Trim());
+                (string full_name, string group) = _db.GetFullNameAndGroupById(userId);
+                if (!int.TryParse(IDReaderTextBox.Text.Trim(), out userId))
                 {
-                    if (givebooks.IssueBook(_books[i - 1], readerID))
-                    {
-                        Book book_info = new Book();
-                        User user_info = new User();
-                        book_info = book_info.GetBookById(_books[i - 1]);
-                        (string full_name, string group) = user_info.GetFullNameAndGroupById(readerID);
-                        string message = $"Книга\n ID: {book_info.BookId}\n Название: {book_info.Title}\n Автор: {book_info.Author}\n Год выпуска: {book_info.PublicationYear}\n" +
-                            $"Была выдана читателю: {full_name} из группы {group}";
-                        MessageBox.Show(message, "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Пожалуйста, введите корректный ID пользователя.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
+                if (full_name == null && group == null)
+                {
+                    MessageBox.Show($"Пользователь с ID {userId}, {full_name},{group} не найден.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                List<Book> booksInfo = new List<Book>();
+                StringBuilder confirmationMessage = new StringBuilder();
+                confirmationMessage.AppendLine($"Вы уверены, что хотите выдать следующие книги:\n");
+
+                foreach (int bookId in _books)
+                {
+                    Book book = _db.GetBookById(bookId);
+                    if (book == null)
+                    {
+                        MessageBox.Show($"Книга с ID {bookId} не найдена. Операция будет отменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    if (book.status == 1)
+                    {
+                        MessageBox.Show($"Книга с ID {bookId} ({book.Title}) уже выдана. Операция будет отменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    booksInfo.Add(book);
+                    confirmationMessage.AppendLine($"  ID: {book.BookId}, Название: {book.Title}, Автор: {book.Author}, Год: {book.PublicationYear}");
+                }
+
+                confirmationMessage.AppendLine($"\nЧитателю: {full_name} из группы {group}");
+
+                DialogResult result = MessageBox.Show(confirmationMessage.ToString(), "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    foreach (Book bookToIssue in booksInfo) 
+                    {
+
+                        if (!_db.InsertIssuedBook( bookToIssue.BookId, userId))
+                        {
+                            throw new Exception($"Не удалось добавить запись о выдаче книги ID {bookToIssue.BookId}.");
+                        }
+                    }
+                    operationSuccessful = true;
+                    if (operationSuccessful)
+                    {
+                        MessageBox.Show($"Все выбранные книги успешно выданы пользователю с ID {userId}.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        _books = null;
+                        this.Close();
                     }
                 }
-                this.Close();
+                else
+                {
+                    MessageBox.Show("Выдача книг отменена.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
 
             }
             catch (FormatException)
@@ -56,6 +106,7 @@ namespace ProjectLIB
             {
                 MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
     }
 }

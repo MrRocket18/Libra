@@ -44,6 +44,8 @@ namespace ProjectLIB
             this.label3 = new System.Windows.Forms.Label();
             this.ResultLabel = new System.Windows.Forms.Label();
             this.ExitButton = new System.Windows.Forms.Button();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.PrintButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -220,12 +222,26 @@ namespace ProjectLIB
             this.ExitButton.UseVisualStyleBackColor = false;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
+            // PrintButton
+            // 
+            this.PrintButton.BackColor = System.Drawing.Color.Chartreuse;
+            this.PrintButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.PrintButton.Location = new System.Drawing.Point(991, 61);
+            this.PrintButton.Margin = new System.Windows.Forms.Padding(4);
+            this.PrintButton.Name = "PrintButton";
+            this.PrintButton.Size = new System.Drawing.Size(108, 108);
+            this.PrintButton.TabIndex = 15;
+            this.PrintButton.Text = "Печать";
+            this.PrintButton.UseVisualStyleBackColor = false;
+            this.PrintButton.Click += new System.EventHandler(this.PrintButton_Click);
+            // 
             // MenuLib
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1540, 727);
+            this.Controls.Add(this.PrintButton);
             this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.ResultLabel);
             this.Controls.Add(this.label3);
@@ -268,5 +284,7 @@ namespace ProjectLIB
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.Label ResultLabel;
         private System.Windows.Forms.Button ExitButton;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private System.Windows.Forms.Button PrintButton;
     }
 }

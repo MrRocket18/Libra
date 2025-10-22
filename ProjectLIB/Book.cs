@@ -15,29 +15,45 @@ namespace ProjectLIB
         public string Author { get; set; }
         public int PublicationYear { get; set; }
         public string Place { get; set; }
-
+        public string Faculty { get; set; }
+        public string Specialty { get; set; }
+        public string Subject { get; set; }
         public int? FacultyId { get; set; }
         public int? SpecialtyId { get; set; }
         public int? SubjectId { get; set; }
+        public bool IsPrinted { get; set; }
+        public int status { get; set; }
+        public byte[] QrCodeImageBytes { get; set; }
+        public string QrCodeStatus { get; set; }
         public Book() { }
 
         DB db = new DB();
 
-        public Book(int bookId, string title, string author, int publicationYear,string place)
+        public Book( string title, string author, int publicationYear,string place, string faculty, string specialty, string subject)
+        {
+            Title = title;
+            Author = author;
+            PublicationYear = publicationYear;
+            Place = place;
+            Faculty = faculty;
+            Specialty = specialty;
+            Subject = subject;
+        }
+        public Book(int bookId, string title, string author, int publicationYear, string place, int? facultyId, int? specialtyId, int? subjectId,int Status)
         {
             BookId = bookId;
             Title = title;
             Author = author;
             PublicationYear = publicationYear;
             Place = place;
-        }
-        public Book(int bookId, string title, string author, int publicationYear, string place, int? facultyId, int? specialtyId, int? subjectId)
-        : this(bookId, title, author, publicationYear, place) 
-        {
+            status = Status;
             FacultyId = facultyId;
             SpecialtyId = specialtyId;
             SubjectId = subjectId;
         }
+
+
+
         public override bool Equals(object obj)
         {
             
@@ -60,7 +76,17 @@ namespace ProjectLIB
                    SubjectId == otherBook.SubjectId;
         }
 
-
+        public  string GetStatusBook()
+        {
+            if (status == 0) {
+                return "Не выдана";
+            }
+            else if (status == 1)
+            {
+                return "Выдана";
+            }
+            return "0";
+        }
         public Book GetBookById(int bookId)
         {
             Book book = null;  
@@ -74,7 +100,7 @@ namespace ProjectLIB
 
                     
                     string query = @"
-                    SELECT bookID, name, author, year, place, faculty_id, specialty_id, subject_id
+                    SELECT bookID, name, author, year, place, faculty_id, specialty_id, subject_id, status 
                     FROM books
                     WHERE bookID = @bookId";
 
@@ -98,7 +124,8 @@ namespace ProjectLIB
                                     reader["place"].ToString(),
                                     reader["faculty_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["faculty_id"]),
                                     reader["specialty_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["specialty_id"]),
-                                    reader["subject_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["subject_id"])
+                                    reader["subject_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["subject_id"]),
+                                    Convert.ToInt32(reader["status"])
                                 );
                             }
                         }

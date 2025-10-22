@@ -243,12 +243,12 @@ namespace ProjectLIB
             
                 if (selectedBookIds.Count > 0)
                 {
-                    if (AreBooksIdenticalOptimized(selectedBookIds))
-                    {
-                        ChooseWay way = new ChooseWay(selectedBookIds);
-                        way.ShowDialog();
-                        LoadData();
-                    }
+                    //if (AreBooksIdenticalOptimized(selectedBookIds))
+                    //{
+                    //    ChooseWay way = new ChooseWay(selectedBookIds);
+                    //    way.ShowDialog();
+                    //    LoadData();
+                    //}
                 }
                 else
                 {
@@ -256,115 +256,115 @@ namespace ProjectLIB
                 }
             
         }
-        public  bool AreBooksIdenticalOptimized(List<int> bookIds)
-        {
+        //public  bool AreBooksIdenticalOptimized(List<int> bookIds)
+        //{
           
 
-            try
-            {
+        //    try
+        //    {
 
-                _db.openConnection();
-                MySqlConnection connection = _db.getConnection(); 
+        //        _db.openConnection();
+        //        MySqlConnection connection = _db.getConnection(); 
 
                 
-                    StringBuilder queryBuilder = new StringBuilder(@"
-                    SELECT bookID, name, author, year, status, place, faculty_id, specialty_id, subject_id
-                    FROM books
-                    WHERE bookID IN (");
+        //            StringBuilder queryBuilder = new StringBuilder(@"
+        //            SELECT bookID, name, author, year, status, place, faculty_id, specialty_id, subject_id
+        //            FROM books
+        //            WHERE bookID IN (");
 
-                    for (int i = 0; i < bookIds.Count; i++)
-                    {
-                        queryBuilder.Append($"@bookId{i}");
-                        if (i < bookIds.Count - 1)
-                        {
-                            queryBuilder.Append(",");
-                        }
-                    }
-                    queryBuilder.Append(")");
+        //            for (int i = 0; i < bookIds.Count; i++)
+        //            {
+        //                queryBuilder.Append($"@bookId{i}");
+        //                if (i < bookIds.Count - 1)
+        //                {
+        //                    queryBuilder.Append(",");
+        //                }
+        //            }
+        //            queryBuilder.Append(")");
 
-                    string query = queryBuilder.ToString();
-
-                    
-                    List<Book> books = new List<Book>();
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        for (int i = 0; i < bookIds.Count; i++)
-                        {
-                            command.Parameters.AddWithValue($"@bookId{i}", bookIds[i]);
-                        }
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int? facultyId = null;
-                                if (reader["faculty_id"] != DBNull.Value)
-                                {
-                                    facultyId = Convert.ToInt32(reader["faculty_id"]);
-                                }
-
-                                int? specialtyId = null;
-                                if (reader["specialty_id"] != DBNull.Value)
-                                {
-                                    specialtyId = Convert.ToInt32(reader["specialty_id"]);
-                                }
-
-                                int? subjectId = null;
-                                if (reader["subject_id"] != DBNull.Value)
-                                {
-                                    subjectId = Convert.ToInt32(reader["subject_id"]);
-                                }
-
-                                books.Add(new Book(
-                                    Convert.ToInt32(reader["bookID"]),
-                                    reader["name"].ToString(),
-                                    reader["author"].ToString(),
-                                    Convert.ToInt32(reader["year"]),
-                                    reader["place"].ToString(),
-                                    facultyId,
-                                    specialtyId,
-                                    subjectId
-                                ));
-                            }
-                        }
-                    }
+        //            string query = queryBuilder.ToString();
 
                     
-                    if (books.Count != bookIds.Count)
-                    {
-                        List<int> notFoundIds = bookIds.Except(books.Select(b => b.BookId)).ToList();
-                        MessageBox.Show( $"Не найдены книги с ID: {string.Join(",", notFoundIds)}");
-                        return false;
-                    }
+        //            List<Book> books = new List<Book>();
+        //            using (MySqlCommand command = new MySqlCommand(query, connection))
+        //            {
+        //                for (int i = 0; i < bookIds.Count; i++)
+        //                {
+        //                    command.Parameters.AddWithValue($"@bookId{i}", bookIds[i]);
+        //                }
+
+        //                using (MySqlDataReader reader = command.ExecuteReader())
+        //                {
+        //                    while (reader.Read())
+        //                    {
+        //                        int? facultyId = null;
+        //                        if (reader["faculty_id"] != DBNull.Value)
+        //                        {
+        //                            facultyId = Convert.ToInt32(reader["faculty_id"]);
+        //                        }
+
+        //                        int? specialtyId = null;
+        //                        if (reader["specialty_id"] != DBNull.Value)
+        //                        {
+        //                            specialtyId = Convert.ToInt32(reader["specialty_id"]);
+        //                        }
+
+        //                        int? subjectId = null;
+        //                        if (reader["subject_id"] != DBNull.Value)
+        //                        {
+        //                            subjectId = Convert.ToInt32(reader["subject_id"]);
+        //                        }
+
+        //                        books.Add(new Book(
+        //                            Convert.ToInt32(reader["bookID"]),
+        //                            reader["name"].ToString(),
+        //                            reader["author"].ToString(),
+        //                            Convert.ToInt32(reader["year"]),
+        //                            reader["place"].ToString(),
+        //                            facultyId,
+        //                            specialtyId,
+        //                            subjectId
+        //                        ));
+        //                    }
+        //                }
+        //            }
+
+                    
+        //            if (books.Count != bookIds.Count)
+        //            {
+        //                List<int> notFoundIds = bookIds.Except(books.Select(b => b.BookId)).ToList();
+        //                MessageBox.Show( $"Не найдены книги с ID: {string.Join(",", notFoundIds)}");
+        //                return false;
+        //            }
 
                    
-                    Book firstBook = books[0];
-                    for (int i = 1; i < books.Count; i++)
-                    {
-                        if (!firstBook.Equals(books[i]))
-                        {
-                            MessageBox.Show($"Книги с ID {firstBook.BookId} и {books[i].BookId} не идентичны.");
-                            return false;
-                        }
-                    }
+        //            Book firstBook = books[0];
+        //            for (int i = 1; i < books.Count; i++)
+        //            {
+        //                if (!firstBook.Equals(books[i]))
+        //                {
+        //                    MessageBox.Show($"Книги с ID {firstBook.BookId} и {books[i].BookId} не идентичны.");
+        //                    return false;
+        //                }
+        //            }
 
                     
-                    return true;
+        //            return true;
                 
-            }
-            catch (MySqlException ex)
-            {
+        //    }
+        //    catch (MySqlException ex)
+        //    {
                 
-                MessageBox.Show(($"Ошибка базы данных: {ex.Message}"));
-                return false;
-            }
-            catch (Exception ex)
-            {
+        //        MessageBox.Show(($"Ошибка базы данных: {ex.Message}"));
+        //        return false;
+        //    }
+        //    catch (Exception ex)
+        //    {
                 
-                MessageBox.Show(($"Неизвестная ошибка: {ex.Message}"));
-                return false;
-            }
-        }
+        //        MessageBox.Show(($"Неизвестная ошибка: {ex.Message}"));
+        //        return false;
+        //    }
+        //}
 
         private void comboBoxTableType_SelectedIndexChanged(object sender, EventArgs e)
         {

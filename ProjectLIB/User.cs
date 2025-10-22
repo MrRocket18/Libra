@@ -95,8 +95,6 @@ namespace ProjectLIB
         {
             string fullName = null;
             string group = null;
-            
-            
                 try
                 {
                     db.openConnection();
@@ -114,7 +112,9 @@ namespace ProjectLIB
                                 string middleName = reader["middle_name"] == DBNull.Value ? string.Empty : reader["middle_name"].ToString();
                                 fullName = $"{firstName} {lastName} {middleName}"; 
                                 group = reader["group"].ToString();
+
                             }
+
                         }
                     }
                 }
