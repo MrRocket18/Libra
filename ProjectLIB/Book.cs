@@ -51,31 +51,6 @@ namespace ProjectLIB
             SpecialtyId = specialtyId;
             SubjectId = subjectId;
         }
-
-
-
-        public override bool Equals(object obj)
-        {
-            
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            
-            Book otherBook = (Book)obj;
-
-            
-            return 
-                   Title == otherBook.Title &&
-                   Author == otherBook.Author &&
-                   PublicationYear == otherBook.PublicationYear &&
-                   Place == otherBook.Place &&
-                   FacultyId == otherBook.FacultyId &&
-                   SpecialtyId == otherBook.SpecialtyId &&
-                   SubjectId == otherBook.SubjectId;
-        }
-
         public  string GetStatusBook()
         {
             if (status == 0) {
@@ -87,68 +62,7 @@ namespace ProjectLIB
             }
             return "0";
         }
-        public Book GetBookById(int bookId)
-        {
-            Book book = null;  
-
-            try
-            {
-
-                    db.openConnection();
-                    MySqlConnection connection = db.getConnection();
-                   
-
-                    
-                    string query = @"
-                    SELECT bookID, name, author, year, place, faculty_id, specialty_id, subject_id, status 
-                    FROM books
-                    WHERE bookID = @bookId";
-
-                    
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        
-                        command.Parameters.AddWithValue("@bookId", bookId);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                           
-                            if (reader.Read())
-                            {
-                                
-                                book = new Book(
-                                    Convert.ToInt32(reader["bookID"]),
-                                    reader["name"].ToString(),
-                                    reader["author"].ToString(),
-                                    Convert.ToInt32(reader["year"]),
-                                    reader["place"].ToString(),
-                                    reader["faculty_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["faculty_id"]),
-                                    reader["specialty_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["specialty_id"]),
-                                    reader["subject_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["subject_id"]),
-                                    Convert.ToInt32(reader["status"])
-                                );
-                            }
-                        }
-                    }
-                
-            }
-            catch (MySqlException ex)
-            {
-                
-                MessageBox.Show($"Ошибка при получении информации о книге: {ex.Message}",
-                                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null; 
-            }
-            catch (Exception ex)
-            {
-                
-                MessageBox.Show($"Неизвестная ошибка при получении информации о книге: {ex.Message}",
-                                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null; 
-            }
-
-            return book; 
-        }
+       
         public void SearchBooksAndDisplay(string searchTerm, DataGridView dataGridView, Label ResultLabel)
         {
             try

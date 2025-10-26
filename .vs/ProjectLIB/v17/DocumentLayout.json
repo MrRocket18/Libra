@@ -3,24 +3,16 @@
   "WorkspaceRootPath": "D:\\Libra\\Libra\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|D:\\Libra\\Libra\\projectlib\\menulib.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|solutionrelative:projectlib\\menulib.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|d:\\libra\\libra\\projectlib\\menulib.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|solutionrelative:projectlib\\menulib.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|d:\\libra\\libra\\projectlib\\db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|solutionrelative:projectlib\\db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|d:\\libra\\libra\\projectlib\\returnbook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|solutionrelative:projectlib\\returnbook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|d:\\libra\\libra\\projectlib\\giveoutbooks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|solutionrelative:projectlib\\giveoutbooks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|D:\\Libra\\Libra\\projectlib\\menulib.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|solutionrelative:projectlib\\menulib.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0288AB09-C62A-4E1A-8D66-1EF6253298DB}|ProjectLIB\\ProjectLIB.csproj|D:\\Libra\\Libra\\projectlib\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -33,89 +25,64 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 251,
+          "DockedWidth": 314,
           "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "GiveOutBooks.cs",
-              "DocumentMoniker": "D:\\Libra\\Libra\\ProjectLIB\\GiveOutBooks.cs",
-              "RelativeDocumentMoniker": "ProjectLIB\\GiveOutBooks.cs",
-              "ToolTip": "D:\\Libra\\Libra\\ProjectLIB\\GiveOutBooks.cs",
-              "RelativeToolTip": "ProjectLIB\\GiveOutBooks.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-22T14:29:47.392Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MenuLib.cs",
               "DocumentMoniker": "D:\\Libra\\Libra\\ProjectLIB\\MenuLib.cs",
               "RelativeDocumentMoniker": "ProjectLIB\\MenuLib.cs",
               "ToolTip": "D:\\Libra\\Libra\\ProjectLIB\\MenuLib.cs",
               "RelativeToolTip": "ProjectLIB\\MenuLib.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIcAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8CAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-19T13:17:00.861Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ReturnBook.cs",
-              "DocumentMoniker": "D:\\Libra\\Libra\\ProjectLIB\\ReturnBook.cs",
-              "RelativeDocumentMoniker": "ProjectLIB\\ReturnBook.cs",
-              "ToolTip": "D:\\Libra\\Libra\\ProjectLIB\\ReturnBook.cs",
-              "RelativeToolTip": "ProjectLIB\\ReturnBook.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEcAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-22T14:56:43.064Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "MenuLib.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "DocumentMoniker": "D:\\Libra\\Libra\\ProjectLIB\\MenuLib.cs",
               "RelativeDocumentMoniker": "ProjectLIB\\MenuLib.cs",
               "ToolTip": "D:\\Libra\\Libra\\ProjectLIB\\MenuLib.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "RelativeToolTip": "ProjectLIB\\MenuLib.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-19T13:16:54.597Z"
+              "WhenOpened": "2025-09-19T13:16:54.597Z",
+              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
             }
           ]
         },
         {
-          "DockedWidth": 149,
-          "SelectedChildIndex": 1,
+          "DockedWidth": 86,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Book.cs",
-              "DocumentMoniker": "D:\\Libra\\Libra\\ProjectLIB\\Book.cs",
-              "RelativeDocumentMoniker": "ProjectLIB\\Book.cs",
-              "ToolTip": "D:\\Libra\\Libra\\ProjectLIB\\Book.cs",
-              "RelativeToolTip": "ProjectLIB\\Book.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAA9wCQAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-19T13:17:02.292Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DB.cs",
               "DocumentMoniker": "D:\\Libra\\Libra\\ProjectLIB\\DB.cs",
               "RelativeDocumentMoniker": "ProjectLIB\\DB.cs",
               "ToolTip": "D:\\Libra\\Libra\\ProjectLIB\\DB.cs",
               "RelativeToolTip": "ProjectLIB\\DB.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMCAAAAAAAAAAAAwCcCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-19T14:33:08.561Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Book.cs",
+              "DocumentMoniker": "D:\\Libra\\Libra\\ProjectLIB\\Book.cs",
+              "RelativeDocumentMoniker": "ProjectLIB\\Book.cs",
+              "ToolTip": "D:\\Libra\\Libra\\ProjectLIB\\Book.cs",
+              "RelativeToolTip": "ProjectLIB\\Book.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T15:02:48.231Z"
             }
           ]
         }

@@ -26,10 +26,16 @@ namespace ProjectLIB
             try
             {
                 int BookID = int.Parse(BookIDtextBox.Text);
+                string Reason = ReasonTextBox.Text;
                 if (BookID <= 0)
                 {
-                    MessageBox.Show("Некорректный ID книги для удаления.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Некорректный ID книги для списания.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
+                }
+                if (Reason.Count() == 0)
+                {
+                    MessageBox.Show("Введите прчину списания.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
                 Book book_info = _db.GetBookById(BookID); 
@@ -39,25 +45,25 @@ namespace ProjectLIB
 
                 }
 
-                string message = $"Вы уверены, что хотите удалить книгу?\n\n" +
+                string message = $"Вы уверены, что хотите списать книгу?\n\n" +
                                   $"ID: {book_info.BookId}\n" +
                                   $"Название: {book_info.Title}\n" +
                                   $"Автор: {book_info.Author}\n" +
                                   $"Год: {book_info.PublicationYear}";
 
-                DialogResult result = MessageBox.Show(message, "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show(message, "Подтверждение списания", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    if (_db.DeleteBook(BookID))
+                    if (_db.DeleteBook(BookID,Reason))
                     {
-                        MessageBox.Show($"Книга с ID {BookID} успешно удалена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"Книга с ID {BookID} успешно списана!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.Close();
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Удаление отменено.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Списание отменено.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     
                 }
 
@@ -76,5 +82,7 @@ namespace ProjectLIB
         {
             this.Close();
         }
+
+
     }
 }

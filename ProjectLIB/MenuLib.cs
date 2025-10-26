@@ -37,17 +37,36 @@ namespace ProjectLIB
         public MenuLib(string FullName)
         {
             InitializeComponent();
-            LoadData();
+            LoadData(_db.GetAllBooksWithQrDetails());
+            LoadDataForReaders(_db.GetUsers());
             this.StartPosition = FormStartPosition.CenterScreen;
             NameLabel.Text = FullName;
-            comboBoxTableType.Items.Add("По книгам"); 
-            comboBoxTableType.Items.Add("По читателям"); 
-            comboBoxTableType.SelectedIndex = 0;
             printDocumentQrCode = new System.Drawing.Printing.PrintDocument();
             printDocumentQrCode.PrintPage += new PrintPageEventHandler(PrintDocumentQrCode_PrintPage);
   
         }
-        private void LoadData()
+
+        private void LoadDataForReaders(List<User> users)
+        {
+            try
+            {
+                dataGridViewUsers.AutoGenerateColumns = false;
+                dataGridViewUsers.DataSource = null;
+
+                dataGridViewUsers.Rows.Clear();
+                dataGridViewUsers.Columns.Clear();
+                dataGridViewUsers.AutoGenerateColumns = false;
+
+                FillDataGridViewReaders(users);
+
+                ResultsLabelReaders.Text = users.Count.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке данныхв таблицу читателей: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void LoadData(List<Book> books)
         {
             try
             {
@@ -58,18 +77,47 @@ namespace ProjectLIB
                 dataGridView1.Columns.Clear();
                 dataGridView1.AutoGenerateColumns = false;
 
-
-                List<Book> books = _db.GetAllBooksWithQrDetails();
-                
                 FillDataGridView(books);
 
                 ResultLabel.Text = books.Count.ToString();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка при загрузке данных в таблицу книг: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void FillDataGridViewReaders(List<User> users)
+        {
+            dataGridViewUsers.AutoGenerateColumns = false;
+            DataGridViewTextBoxColumn userIdColumn = new DataGridViewTextBoxColumn();
+            userIdColumn.DataPropertyName = "Id";
+            userIdColumn.HeaderText = "ID";
+            dataGridViewUsers.Columns.Add(userIdColumn);
+
+            DataGridViewTextBoxColumn firstNameColumn = new DataGridViewTextBoxColumn();
+            firstNameColumn.DataPropertyName = "First_name";
+            firstNameColumn.HeaderText = "Фамилия";
+            dataGridViewUsers.Columns.Add(firstNameColumn);
+
+            DataGridViewTextBoxColumn lastNameColumn = new DataGridViewTextBoxColumn();
+            lastNameColumn.DataPropertyName = "Last_name";
+            lastNameColumn.HeaderText = "Имя";
+            dataGridViewUsers.Columns.Add(lastNameColumn);
+
+            DataGridViewTextBoxColumn middleNameColumn = new DataGridViewTextBoxColumn();
+            middleNameColumn.DataPropertyName = "Middle_name";
+            middleNameColumn.HeaderText = "Отчество";
+            dataGridViewUsers.Columns.Add(middleNameColumn);
+
+            DataGridViewTextBoxColumn groupNameColumn = new DataGridViewTextBoxColumn();
+            groupNameColumn.DataPropertyName = "Group";
+            groupNameColumn.HeaderText = "Группа";
+            dataGridViewUsers.Columns.Add(groupNameColumn);
+
+            dataGridViewUsers.DataSource = users;
+        }
+
+
         private void FillDataGridView(List<Book> books)
         {
 
@@ -436,7 +484,7 @@ namespace ProjectLIB
                 {
                     MessageBox.Show("В выбранном файле не найдено корректных данных для загрузки книг.", "Нет данных", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                LoadData();
+                LoadData(_db.GetAllBooksWithQrDetails());
                 
                
             }
@@ -457,37 +505,11 @@ namespace ProjectLIB
                 MessageBox.Show($"Произошла непредвиденная ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void FindReadersbutton_Click(object sender, EventArgs e)
-        {
-            Search search = new Search();
-            search.NameLabel.Text = "Введите ID или фамилию читателя";
-            search.ShowDialog();
-            User reader = new User();
-            if (search.status) 
-            {
-                reader.SearchReadersAndDisplay(search.SearchItem, dataGridView1, ResultLabel);
-
-            }
-        }
-        private void FindBooksbutton_Click(object sender, EventArgs e)
-        {
-            Search search = new Search();
-            search.NameLabel.Text = "Введите ID или название книги";
-            search.ShowDialog();
-            Book book = new Book();
-            if (search.status)
-            {
-                book.SearchBooksAndDisplay(search.SearchItem, dataGridView1,ResultLabel);
-            }
-
-        }
-
         private void DeleteBookButton_Click(object sender, EventArgs e)
         {
             DeleteBook book = new DeleteBook();
             book.ShowDialog();
-            LoadData();
+            LoadData(_db.GetAllBooksWithQrDetails());
         }
 
         private void GiveOutBooksButton_Click(object sender, EventArgs e)
@@ -498,7 +520,7 @@ namespace ProjectLIB
             {
                 GiveOutBooks books = new GiveOutBooks(selectedBookIds);
                 books.ShowDialog();
-                LoadData();
+                LoadData(_db.GetAllBooksWithQrDetails());
             }
             else
             {
@@ -506,13 +528,11 @@ namespace ProjectLIB
             }
 
         }
-
-
         private void ReturnBookbutton_Click(object sender, EventArgs e)
         {
             ReturnBook book = new ReturnBook();
             book.ShowDialog();
-            LoadData();
+            LoadData(_db.GetAllBooksWithQrDetails());
         }
 
         private void EditBookDataButton_Click(object sender, EventArgs e)
@@ -571,10 +591,6 @@ namespace ProjectLIB
                                     string facultyName = parts[5].Trim();
                                     string specialtyName = parts[6].Trim();
                                     string subjectName = parts[7].Trim();
-
-                                  
-
-                                    
                                     if (_db.UpdateBook(bookId, title, author, year, place, facultyName, specialtyName, subjectName))
                                     {
                                         updatedCount++;
@@ -608,7 +624,7 @@ namespace ProjectLIB
 
                     MessageBox.Show($"Обновлено книг: {updatedCount}, Ошибок: {errorCount}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    LoadData();
+                    LoadData(_db.GetAllBooksWithQrDetails());
                 }
                 catch (Exception ex)
                 {
@@ -617,138 +633,6 @@ namespace ProjectLIB
                 }
             }
         }
-
-        //public bool AreBooksIdenticalOptimized(List<int> bookIds)
-        //{
-
-
-        //    try
-        //    {
-
-        //        _db.openConnection();
-        //        MySqlConnection connection = _db.getConnection();
-
-
-        //        StringBuilder queryBuilder = new StringBuilder(@"
-        //            SELECT bookID, name, author, year, status, place, faculty_id, specialty_id, subject_id
-        //            FROM books
-        //            WHERE bookID IN (");
-
-        //        for (int i = 0; i < bookIds.Count; i++)
-        //        {
-        //            queryBuilder.Append($"@bookId{i}");
-        //            if (i < bookIds.Count - 1)
-        //            {
-        //                queryBuilder.Append(",");
-        //            }
-        //        }
-        //        queryBuilder.Append(")");
-
-        //        string query = queryBuilder.ToString();
-
-
-        //        List<Book> books = new List<Book>();
-        //        using (MySqlCommand command = new MySqlCommand(query, connection))
-        //        {
-        //            for (int i = 0; i < bookIds.Count; i++)
-        //            {
-        //                command.Parameters.AddWithValue($"@bookId{i}", bookIds[i]);
-        //            }
-
-        //            using (MySqlDataReader reader = command.ExecuteReader())
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    int? facultyId = null;
-        //                    if (reader["faculty_id"] != DBNull.Value)
-        //                    {
-        //                        facultyId = Convert.ToInt32(reader["faculty_id"]);
-        //                    }
-
-        //                    int? specialtyId = null;
-        //                    if (reader["specialty_id"] != DBNull.Value)
-        //                    {
-        //                        specialtyId = Convert.ToInt32(reader["specialty_id"]);
-        //                    }
-
-        //                    int? subjectId = null;
-        //                    if (reader["subject_id"] != DBNull.Value)
-        //                    {
-        //                        subjectId = Convert.ToInt32(reader["subject_id"]);
-        //                    }
-
-        //                    books.Add(new Book(
-        //                        Convert.ToInt32(reader["bookID"]),
-        //                        reader["name"].ToString(),
-        //                        reader["author"].ToString(),
-        //                        Convert.ToInt32(reader["year"]),
-        //                        reader["place"].ToString(),
-        //                        facultyId,
-        //                        specialtyId,
-        //                        subjectId
-        //                    ));
-        //                }
-        //            }
-        //        }
-
-
-        //        if (books.Count != bookIds.Count)
-        //        {
-        //            List<int> notFoundIds = bookIds.Except(books.Select(b => b.BookId)).ToList();
-        //            MessageBox.Show($"Не найдены книги с ID: {string.Join(",", notFoundIds)}");
-        //            return false;
-        //        }
-
-
-        //        Book firstBook = books[0];
-        //        for (int i = 1; i < books.Count; i++)
-        //        {
-        //            if (!firstBook.Equals(books[i]))
-        //            {
-        //                MessageBox.Show($"Книги с ID {firstBook.BookId} и {books[i].BookId} не идентичны.");
-        //                return false;
-        //            }
-        //        }
-
-
-        //        return true;
-
-        //    }
-        //    catch (MySqlException ex)
-        //    {
-
-        //        MessageBox.Show(($"Ошибка базы данных: {ex.Message}"));
-        //        return false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        MessageBox.Show(($"Неизвестная ошибка: {ex.Message}"));
-        //        return false;
-        //    }
-        //}
-
-        private void comboBoxTableType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-            MenuLib.TableType tableType;
-
-            if (comboBoxTableType.SelectedItem.ToString() == "По читателям") 
-            {
-                tableType = MenuLib.TableType.Readers;
-            }
-            else if (comboBoxTableType.SelectedItem.ToString() == "По книгам") 
-            {
-                tableType = MenuLib.TableType.Books;
-            }
-            else
-            {
-                MessageBox.Show("Выберите таблицу для отображения.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; 
-            }
-            //PopulateDataGridView(tableType, dataGridView1);
-        }
-
         private void ExitButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -800,6 +684,7 @@ namespace ProjectLIB
                             _qrCodesToPrintQueue = new Queue<byte[]>(tempQrCodes);
                             _booksForPrintInfoQueue = new Queue<Book>(tempBooksInfo);
                             printDocumentQrCode.Print();
+                            
                         }
                         else
                         {
@@ -812,7 +697,7 @@ namespace ProjectLIB
                     MessageBox.Show("Не выбрано ни одной книги для печати или произошла ошибка при подготовке данных.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-                LoadData();
+                LoadData(_db.GetAllBooksWithQrDetails());
             }
             else
             {
@@ -875,6 +760,7 @@ namespace ProjectLIB
                                 RectangleF textRect = new RectangleF(x, textY, targetQrCodeWidthPixels, g.MeasureString(bookInfo, font).Height + 10);
                                 g.DrawString(bookInfo, font, Brushes.Black, textRect, sf);
                             }
+                            _db.MarkBookAsPrinted(book.BookId);
                             Console.WriteLine($"Нарисован QR-код {qrCodesDrawnOnPage + 1} (Книга {book.Title}) в строке {currentRowIndex}, колонке {i}.");
                         }
                     }
@@ -904,6 +790,50 @@ namespace ProjectLIB
                     MessageBox.Show("Печать завершена!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            string search = SearchTextBox.Text.Trim();
+            if (search.Length == 0 )
+            {
+                MessageBox.Show("В поле поиска ничего нет!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData(_db.GetAllBooksWithQrDetails());
+            }
+            List<Book> book_result = _db.Search(search);
+            if (book_result.Count == 0)
+            {
+                MessageBox.Show("Ничего не найденно!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData(_db.GetAllBooksWithQrDetails());
+            }
+            LoadData(book_result);
+        }
+
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            LoadData(_db.GetAllBooksWithQrDetails());
+        }
+
+        private void SearchReadersButton_Click(object sender, EventArgs e)
+        {
+            string search = SearchReadersTextBox.Text.Trim();
+            if (search.Length == 0)
+            {
+                MessageBox.Show("В поле поиска ничего нет!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDataForReaders(_db.GetUsers());
+            }
+            List<User> user_result = _db.SearchUsers(search); 
+            if (user_result.Count == 0)
+            {
+                MessageBox.Show("Ничего не найденно!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDataForReaders(_db.GetUsers());
+            }
+            LoadDataForReaders(user_result);
+        }
+
+        private void BackButton2_Click(object sender, EventArgs e)
+        {
+            LoadDataForReaders(_db.GetUsers());
         }
     }
 

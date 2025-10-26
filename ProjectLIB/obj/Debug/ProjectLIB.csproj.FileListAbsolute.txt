@@ -87,10 +87,7 @@ D:\Libra\Libra\ProjectLIB\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\Libra\Libra\ProjectLIB\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.csproj.AssemblyReference.cache
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.exe.config
-D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.AddBooks.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.Authorization.resources
-D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.ChangeData.resources
-D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.ChooseWay.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.DeleteBook.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.GiveOutBooks.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.MenuLib.resources

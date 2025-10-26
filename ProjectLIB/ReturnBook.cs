@@ -29,7 +29,7 @@ namespace ProjectLIB
 
         private void ReturnBookButton_Click(object sender, EventArgs e)
         {
-            BooksInteraction book = new BooksInteraction();
+
             try
             {
                 int bookID = 0;

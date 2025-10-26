@@ -44,27 +44,16 @@ namespace ProjectLIB
             {
                 openConnection();
                 connection = getConnection();
-                Console.WriteLine(book.Faculty);
-                Console.WriteLine(book.Specialty);
-                Console.WriteLine(book.Subject);
-                // Создаем команду для вызова хранимой процедуры
                 using (MySqlCommand command = new MySqlCommand("sp_add_book", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-
-                    // Добавляем параметры процедуры
                     command.Parameters.AddWithValue("p_name", MySqlHelper.EscapeString(book.Title));
                     command.Parameters.AddWithValue("p_year", book.PublicationYear);
                     command.Parameters.AddWithValue("p_place", MySqlHelper.EscapeString(book.Place));
-
-                    // Теперь передаем названия, а не ID
                     command.Parameters.AddWithValue("p_faculty_name", book.Faculty);
                     command.Parameters.AddWithValue("p_specialty_name", book.Specialty);
                     command.Parameters.AddWithValue("p_subject_name", book.Subject);
-
                     command.Parameters.AddWithValue("p_authors_temp", MySqlHelper.EscapeString(book.Author));
-
-                    // Выполняем процедуру
                     command.ExecuteNonQuery();
                     Console.WriteLine($"Книга \"{book.Title}\" успешно добавлена.");
                 }
@@ -83,7 +72,7 @@ namespace ProjectLIB
             }
         }
 
-        public void MarkBookAsPrinted(int bookId, byte[] qrCodeBytes)
+        public void MarkBookAsPrinted(int bookId)
         {
 
 
@@ -141,18 +130,7 @@ namespace ProjectLIB
             LEFT JOIN 
                 authors_of_books ao ON b.bookID = ao.id_book
             LEFT JOIN 
-                authors a ON a.id_au IN (
-                    ao.first_au_id, 
-                    ao.second_au_id, 
-                    ao.third_au_id, 
-                    ao.fourth_au_id, 
-                    ao.fifth_au_id, 
-                    ao.sixth_au_id, 
-                    ao.seventh_au_id, 
-                    ao.eighth_au_id, 
-                    ao.ninth_au_id, 
-                    ao.tenth_au_id
-                ) AND a.id_au > 0 
+                authors a ON a.id_au = ao.au_id 
             WHERE b.bookID = @BookId
             GROUP BY 
                 b.bookID, 
@@ -241,18 +219,8 @@ namespace ProjectLIB
             LEFT JOIN 
                 authors_of_books ao ON b.bookID = ao.id_book
             LEFT JOIN 
-                authors a ON a.id_au IN (
-                    ao.first_au_id, 
-                    ao.second_au_id, 
-                    ao.third_au_id, 
-                    ao.fourth_au_id, 
-                    ao.fifth_au_id, 
-                    ao.sixth_au_id, 
-                    ao.seventh_au_id, 
-                    ao.eighth_au_id, 
-                    ao.ninth_au_id, 
-                    ao.tenth_au_id
-                ) AND a.id_au > 0  
+                authors a ON a.id_au = ao.au_id
+            WHERE b.status < 1
             GROUP BY 
                 b.bookID, 
                 b.name, 
@@ -305,32 +273,21 @@ namespace ProjectLIB
         public bool UpdateBook(int bookId, string title, string author, int year, string place, string facultyName, string specialtyName, string subjectName)
         {
 
-            string query = @"
-            UPDATE books
-            SET name = @title,
-                author = @author,
-                year = @year,
-                place = @place,
-                faculty_id = (SELECT faculty_id FROM faculties WHERE faculty_name = @FacultyName),
-                specialty_id = (SELECT specialty_id FROM specialties WHERE specialty_name = @SpecialtyName),
-                subject_id = (SELECT subject_id FROM subjects WHERE subject_name = @SubjectName)
-            WHERE bookID = @bookId";
-
             try
             {
                 openConnection();
-                using (MySqlCommand command = new MySqlCommand(query, getConnection()))
+                connection = getConnection();
+                using (MySqlCommand command = new MySqlCommand("sp_update_book", connection))
                 {
-                    command.Parameters.AddWithValue("@bookId", bookId);
-                    command.Parameters.AddWithValue("@title", title);
-                    command.Parameters.AddWithValue("@author", author);
-                    command.Parameters.AddWithValue("@year", year);
-                    command.Parameters.AddWithValue("@place", place);
-                    command.Parameters.AddWithValue("@FacultyName", facultyName);
-                    command.Parameters.AddWithValue("@SpecialtyName", specialtyName);
-                    command.Parameters.AddWithValue("@SubjectName", subjectName);
-
-
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("p_book_id", bookId);
+                    command.Parameters.AddWithValue("p_name", MySqlHelper.EscapeString(title));
+                    command.Parameters.AddWithValue("p_year", year);
+                    command.Parameters.AddWithValue("p_place", MySqlHelper.EscapeString(place));
+                    command.Parameters.AddWithValue("p_faculty_name", facultyName);
+                    command.Parameters.AddWithValue("p_specialty_name", specialtyName);
+                    command.Parameters.AddWithValue("p_subject_name", subjectName);
+                    command.Parameters.AddWithValue("p_authors_temp", MySqlHelper.EscapeString(author));
                     int rowsAffected = command.ExecuteNonQuery();
                     closeConnection();
                     return rowsAffected > 0;
@@ -342,31 +299,27 @@ namespace ProjectLIB
                 return false;
             }
         }
-        public bool DeleteBook(int bookId)
+        public bool DeleteBook(int bookId, string reason)
         {
-            string deleteQuery = "DELETE FROM books WHERE bookID = @book_id";
+            string query = "INSERT INTO decommissioned_books (bookID, reason, decommissioned_date) VALUES (@book_id, @reason, @decommissioned_date)";
             try
             {
                 openConnection();
-                using (MySqlCommand deleteCommand = new MySqlCommand(deleteQuery, getConnection()))
+                using (MySqlCommand command = new MySqlCommand(query, getConnection()))
                 {
-                    deleteCommand.Parameters.AddWithValue("@book_id", bookId); 
-                    int rowsAffected = deleteCommand.ExecuteNonQuery();
-                    closeConnection();
-                    return rowsAffected > 0; 
+                    command.Parameters.AddWithValue("@book_id", bookId);
+                    command.Parameters.AddWithValue("@reason", reason);
+                    command.Parameters.AddWithValue("@decommissioned_date", DateTime.Now);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
                 }
-                
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show($"Ошибка MySQL при удалении книги с ID {bookId}: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Неизвестная ошибка при выполнении запроса на удаление книги с ID {bookId}: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка при добавлении записи о списании книги: {ex.Message}");
                 return false;
             }
+            finally { closeConnection(); }
         }
         public bool InsertIssuedBook( int bookId, int userId)
         {
@@ -449,6 +402,180 @@ namespace ProjectLIB
             }
             closeConnection();
             return true;
+        }
+        public List<Book> Search(string searchTerm)
+        {
+                string sqlQuery = @"
+                SELECT
+                    b.bookID,
+                    b.name AS book_name,
+                    b.year,
+                    b.place,
+                    b.IsPrinted,
+                    b.status,
+
+                    s.subject_id,
+                    s.subject_name,
+    
+                    sp.specialty_id,
+                    sp.specialty_name,
+    
+                    f.faculty_id,
+                    f.faculty_name,
+
+                    GROUP_CONCAT(a.author ORDER BY a.author SEPARATOR ', ') AS authors
+                FROM
+                    libraryuniversity.books AS b
+                LEFT JOIN
+                    libraryuniversity.subjects AS s ON b.subject_id = s.subject_id
+                LEFT JOIN
+                    libraryuniversity.specialties AS sp ON b.specialty_id = sp.specialty_id
+                LEFT JOIN
+                    libraryuniversity.faculties AS f ON b.faculty_id = f.faculty_id    
+                LEFT JOIN
+                    libraryuniversity.authors_of_books AS aob ON b.bookID = aob.id_book
+                LEFT JOIN
+                    libraryuniversity.authors AS a ON aob.au_id = a.id_au
+                WHERE
+                    b.name LIKE @search_term OR
+                    b.place LIKE @search_term OR
+                    s.subject_name LIKE @search_term OR
+                    CAST(b.year AS CHAR) LIKE @search_term OR
+                    a.author LIKE @search_term
+                GROUP BY
+                    b.bookID, b.name, b.year, b.place, b.IsPrinted, b.status,
+                    s.subject_id, s.subject_name, sp.specialty_id, sp.specialty_name, f.faculty_id, f.faculty_name;
+                        ";
+                openConnection();
+            List<Book> searchResults = new List<Book>();
+            using (MySqlCommand cmd = new MySqlCommand(sqlQuery,getConnection()))
+                {
+             
+                    cmd.Parameters.AddWithValue("@search_term", "%" + MySqlHelper.EscapeString(searchTerm) + "%");  //Добавляем символы подстановки для поиска
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        
+
+                        while (reader.Read())
+                        {
+                            
+                            Book book = new Book
+                            {
+
+                                BookId = reader.GetInt32("bookID"),
+                                Title = reader.GetString("book_name"), 
+                                PublicationYear = reader.GetInt32("year"),
+                                Place = reader.GetString("place"),
+                                IsPrinted = reader.GetBoolean("IsPrinted"),
+                                status = reader.GetInt32("status"),
+
+                                SubjectId =  reader.GetInt32("subject_id"),
+                                Subject =  reader.GetString("subject_name"),
+
+                                SpecialtyId =  reader.GetInt32("specialty_id"),
+                                Specialty = reader.GetString("specialty_name"),
+
+                                FacultyId =  reader.GetInt32("faculty_id"),
+                                Faculty = reader.GetString("faculty_name"),
+
+                                Author = reader.GetString("authors"),
+                            };
+
+                            searchResults.Add(book);
+                        }
+                    }
+                }
+                return searchResults;
+            
+        }
+
+        public  List<User> GetUsers()
+        {
+            List<User> userList = new List<User>();
+            string sqlQuery = @"
+                SELECT
+                    u.id AS user_id,
+                    u.first_name,
+                    u.last_name,
+                    u.middle_name,
+                    u.role,
+                    g.name AS group_name
+                FROM
+                    libraryuniversity.users AS u
+                LEFT JOIN
+                    libraryuniversity.groups AS g ON u.group = g.id
+                WHERE u.role = 0
+               ;";
+            openConnection();
+                using (MySqlCommand cmd = new MySqlCommand(sqlQuery, getConnection()))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            User user = new User
+                            {
+                                Id = reader.GetInt32("user_id"),
+                                First_name = reader.GetString("first_name"),
+                                Last_name = reader.GetString("last_name"),
+                                Middle_name = reader.GetString("middle_name"),
+                                Group =  reader.GetString("group_name")
+                            };
+
+                            userList.Add(user);
+                        }
+                    }
+                }
+            return userList;
+        }
+        public List<User> SearchUsers(string searchTerm)
+        {
+            List<User> userList = new List<User>();
+            string sqlQuery = @"
+            SELECT
+                u.id AS user_id,
+                u.first_name,
+                u.last_name,
+                u.middle_name,
+                g.name AS group_name
+            FROM
+                libraryuniversity.users AS u
+            LEFT JOIN
+                libraryuniversity.groups AS g ON u.group = g.id
+            WHERE
+                (u.first_name LIKE @search_term OR
+                u.last_name LIKE @search_term OR
+                u.middle_name LIKE @search_term OR
+                g.name LIKE @search_term) AND role = 0
+            ;";
+
+            openConnection();
+
+                using (MySqlCommand cmd = new MySqlCommand(sqlQuery, getConnection()))
+                {
+                    cmd.Parameters.AddWithValue("@search_term", "%" + MySqlHelper.EscapeString(searchTerm) + "%");
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            User user = new User
+                            {
+                                Id = reader.GetInt32("user_id"),
+                                First_name = reader.GetString("first_name"),
+                                Last_name = reader.GetString("last_name"),
+                                Middle_name = reader.GetString("middle_name"),
+                                Group = reader.GetString("group_name")
+                            };
+
+                            userList.Add(user);
+                        }
+                    }
+               }
+            
+
+            return userList;
         }
     }
 

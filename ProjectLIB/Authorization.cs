@@ -32,9 +32,9 @@ namespace ProjectLIB
             current = current.FindUserByLogin(username, password);
             if (current!=null)
             {
-                if (current.Role != "Admin")
+                if (current.Role != 2)
                 {
-                    if(current.Role != "Librarian")
+                    if(current.Role != 1)
                     {
                         MessageBox.Show($"Вы читатель! {current.Role}", "Вход", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }

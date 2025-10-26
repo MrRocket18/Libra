@@ -14,7 +14,7 @@ namespace ProjectLIB
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }  
-        public string Role { get; set; }
+        public int Role { get; set; }
         public string First_name { get; set; }
         public string Last_name { get; set; }
         public string Middle_name { get; set; }
@@ -24,7 +24,7 @@ namespace ProjectLIB
 
         DB db = new DB();
 
-        public User(int id, string login, string password, string role, string first_name, string last_name, string middle_name,string group)
+        public User(int id, string login, string password, int role, string first_name, string last_name, string middle_name,string group)
         {
             Id = id;
             Login = login;
@@ -60,8 +60,8 @@ namespace ProjectLIB
                                 user = new User(
                                     Convert.ToInt32(reader["id"]),
                                     reader["login"].ToString(),
-                                    reader["password"].ToString(),  
-                                    reader["role"].ToString(),
+                                    reader["password"].ToString(),
+                                    Convert.ToInt32(reader["role"]),
                                     reader["first_name"].ToString(),
                                     reader["last_name"].ToString(),
                                     reader["middle_name"].ToString(),
@@ -137,17 +137,11 @@ namespace ProjectLIB
             {
                 db.openConnection();
                 MySqlConnection connection = db.getConnection();
-
-
-
-                // 1. Определяем тип поиска (ID или фамилия)
                 bool isIdSearch = int.TryParse(searchTerm, out int readerId);
-
-                // 2. Создаем SQL-запрос с параметрами
                 string query = @"
                     SELECT id, first_name, last_name, middle_name, `group`
                     FROM users
-                    WHERE role = 'Reader' "; // Фильтруем только читателей
+                    WHERE role = 'Reader' "; 
 
                 if (isIdSearch)
                 {
@@ -159,16 +153,16 @@ namespace ProjectLIB
                 }
                 else
                 {
-                    // Если searchTerm пуст, выводим сообщение и выходим
+                   
                     MessageBox.Show("Введите ID или фамилию для поиска.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    dataGridView.DataSource = null; // Очищаем DataGridView
+                    dataGridView.DataSource = null; 
                     return;
                 }
 
-                // 3. Создаем MySqlCommand
+                
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    // 4. Добавляем параметры
+                   
                     if (isIdSearch)
                     {
                         command.Parameters.AddWithValue("@searchTerm", readerId);
