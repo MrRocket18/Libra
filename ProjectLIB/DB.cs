@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Crypto.Generators;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -57,8 +58,6 @@ namespace ProjectLIB
                     command.ExecuteNonQuery();
                     Console.WriteLine($"Книга \"{book.Title}\" успешно добавлена.");
                 }
-
-                closeConnection();
             }
             catch (MySqlException ex)
             {
@@ -70,6 +69,7 @@ namespace ProjectLIB
                 Console.WriteLine($"Произошла общая ошибка: {ex.Message}");
                 throw;
             }
+            finally { closeConnection(); }
         }
 
         public void MarkBookAsPrinted(int bookId)
@@ -220,7 +220,7 @@ namespace ProjectLIB
                 authors_of_books ao ON b.bookID = ao.id_book
             LEFT JOIN 
                 authors a ON a.id_au = ao.au_id
-            WHERE b.status < 1
+            WHERE b.status < 2
             GROUP BY 
                 b.bookID, 
                 b.name, 
@@ -234,40 +234,47 @@ namespace ProjectLIB
                 b.subject_id, 
                 sub.subject_name,
                 b.IsPrinted;";
-
-            openConnection();
-            using (MySqlCommand command = new MySqlCommand(query, getConnection()))
+            try
             {
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                openConnection();
+                using (MySqlCommand command = new MySqlCommand(query, getConnection()))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    foreach (DataRow row in dataTable.Rows)
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                     {
-                        books.Add(new Book
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        foreach (DataRow row in dataTable.Rows)
                         {
-                            BookId = Convert.ToInt32(row["bookID"]),
-                            Title = row["name"].ToString(),
-                            Author = row["authors"].ToString(),
-                            PublicationYear = Convert.ToInt32(row["year"]),
-                            Place = row["place"].ToString(),
+                            books.Add(new Book
+                            {
+                                BookId = Convert.ToInt32(row["bookID"]),
+                                Title = row["name"].ToString(),
+                                Author = row["authors"].ToString(),
+                                PublicationYear = Convert.ToInt32(row["year"]),
+                                Place = row["place"].ToString(),
 
-                            FacultyId = Convert.ToInt32(row["faculty_id"]),
-                            SpecialtyId = Convert.ToInt32(row["specialty_id"]),
-                            SubjectId = Convert.ToInt32(row["subject_id"]),
+                                FacultyId = Convert.ToInt32(row["faculty_id"]),
+                                SpecialtyId = Convert.ToInt32(row["specialty_id"]),
+                                SubjectId = Convert.ToInt32(row["subject_id"]),
 
-                            Faculty = row["faculty_name"] != DBNull.Value ? row["faculty_name"].ToString() : string.Empty,
-                            Specialty = row["specialty_name"] != DBNull.Value ? row["specialty_name"].ToString() : string.Empty,
-                            Subject = row["subject_name"] != DBNull.Value ? row["subject_name"].ToString() : string.Empty,
+                                Faculty = row["faculty_name"] != DBNull.Value ? row["faculty_name"].ToString() : string.Empty,
+                                Specialty = row["specialty_name"] != DBNull.Value ? row["specialty_name"].ToString() : string.Empty,
+                                Subject = row["subject_name"] != DBNull.Value ? row["subject_name"].ToString() : string.Empty,
 
-                            status = Convert.ToInt32(row["status"]),
-                            IsPrinted = Convert.ToBoolean(row["IsPrinted"])
-                        });
+                                status = Convert.ToInt32(row["status"]),
+                                IsPrinted = Convert.ToBoolean(row["IsPrinted"])
+                            });
+                        }
                     }
                 }
+                return books;
             }
-            return books;
+            catch 
+            { 
+                return books;
+                throw;
+            }
            
         }
         public bool UpdateBook(int bookId, string title, string author, int year, string place, string facultyName, string specialtyName, string subjectName)
@@ -289,7 +296,6 @@ namespace ProjectLIB
                     command.Parameters.AddWithValue("p_subject_name", subjectName);
                     command.Parameters.AddWithValue("p_authors_temp", MySqlHelper.EscapeString(author));
                     int rowsAffected = command.ExecuteNonQuery();
-                    closeConnection();
                     return rowsAffected > 0;
                 }
             }
@@ -298,6 +304,7 @@ namespace ProjectLIB
                 Console.WriteLine($"Ошибка при обновлении книги с ID {bookId}: {ex.Message}");
                 return false;
             }
+            finally { closeConnection(); }
         }
         public bool DeleteBook(int bookId, string reason)
         {
@@ -576,6 +583,57 @@ namespace ProjectLIB
             
 
             return userList;
+        }
+        public User FindUserByLogin(string login, string pass)
+        {
+            User user = null;
+            try
+            {
+                string query = "SELECT id, first_name, last_name, middle_name, `group`, login, password, role FROM users WHERE login = @login";
+
+
+
+                    openConnection();
+                    using (MySqlCommand command = new MySqlCommand(query, getConnection()))
+                    {
+                        command.Parameters.AddWithValue("@login", login);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string hashedPasswordFromDB = reader["password"].ToString();
+                                if (BCrypt.Net.BCrypt.Verify(pass, hashedPasswordFromDB))
+                                {
+                                    user = new User(
+                                        Convert.ToInt32(reader["id"]),
+                                        reader["login"].ToString(),
+                                        null,
+                                        Convert.ToInt32(reader["role"]),
+                                        reader["first_name"].ToString(),
+                                        reader["last_name"].ToString(),
+                                        reader["middle_name"].ToString(),
+                                        reader["group"] == DBNull.Value ? string.Empty : reader["group"].ToString()
+                                    );
+                                    Console.WriteLine("Вошёл");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Вошёл2");
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при поиске пользователя: " + ex.Message);
+                return null;
+            }
+            finally { closeConnection(); }
+            return user;
         }
     }
 

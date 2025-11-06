@@ -23,8 +23,6 @@ namespace ProjectLIB
         public int? SubjectId { get; set; }
         public bool IsPrinted { get; set; }
         public int status { get; set; }
-        public byte[] QrCodeImageBytes { get; set; }
-        public string QrCodeStatus { get; set; }
         public Book() { }
 
         DB db = new DB();
@@ -61,80 +59,6 @@ namespace ProjectLIB
                 return "Выдана";
             }
             return "0";
-        }
-       
-        public void SearchBooksAndDisplay(string searchTerm, DataGridView dataGridView, Label ResultLabel)
-        {
-            try
-            {
-
-                    db.openConnection();
-                    MySqlConnection connection = db.getConnection();
-                    
-                    bool isIdSearch = int.TryParse(searchTerm, out int bookId);
-
-                    
-                    string query = @"
-                    SELECT bookID, name, author, year, status, place, faculty_id, specialty_id, subject_id
-                    FROM books
-                    WHERE ";
-
-                    if (isIdSearch)
-                    {
-                        query += "bookID = @searchTerm";
-                    }
-                    else if (!string.IsNullOrEmpty(searchTerm))
-                    {
-                        query += "name LIKE @searchTerm"; 
-                    }
-                    else
-                    {
-                        
-                        MessageBox.Show("Введите ID или название книги для поиска.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        dataGridView.DataSource = null; 
-                        return;
-                    }
-
-                   
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        
-                        if (isIdSearch)
-                        {
-                            command.Parameters.AddWithValue("@searchTerm", bookId);
-                        }
-                        else if (!string.IsNullOrEmpty(searchTerm))
-                        {
-                            command.Parameters.AddWithValue("@searchTerm", "%" + searchTerm + "%"); 
-                        }
-
-                        
-                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
-                        {
-                            DataTable dataTable = new DataTable();
-
-                            
-                            adapter.Fill(dataTable);
-
-                            
-                            dataGridView.DataSource = dataTable;
-                            
-                            ResultLabel.Text = dataTable.Rows.Count.ToString();
-
-                        }
-                    }
-                
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show($"Ошибка базы данных: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Console.WriteLine($"Ошибка базы данных: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Неизвестная ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Console.WriteLine($"Неизвестная ошибка: {ex.Message}");
-            }
         }
     }
 }

@@ -29,30 +29,18 @@ namespace ProjectLIB
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.DeleteButton = new System.Windows.Forms.Button();
             this.Backbutton = new System.Windows.Forms.Button();
-            this.BookIDtextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ReasonTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(12, 132);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 24);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "ID книги";
-            // 
             // DeleteButton
             // 
             this.DeleteButton.BackColor = System.Drawing.Color.Red;
             this.DeleteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.DeleteButton.Location = new System.Drawing.Point(62, 425);
+            this.DeleteButton.Location = new System.Drawing.Point(79, 328);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(149, 52);
@@ -65,7 +53,7 @@ namespace ProjectLIB
             // 
             this.Backbutton.BackColor = System.Drawing.Color.Chartreuse;
             this.Backbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Backbutton.Location = new System.Drawing.Point(561, 425);
+            this.Backbutton.Location = new System.Drawing.Point(307, 328);
             this.Backbutton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Backbutton.Name = "Backbutton";
             this.Backbutton.Size = new System.Drawing.Size(139, 52);
@@ -74,20 +62,11 @@ namespace ProjectLIB
             this.Backbutton.UseVisualStyleBackColor = false;
             this.Backbutton.Click += new System.EventHandler(this.Backbutton_Click);
             // 
-            // BookIDtextBox
-            // 
-            this.BookIDtextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BookIDtextBox.Location = new System.Drawing.Point(231, 132);
-            this.BookIDtextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.BookIDtextBox.Name = "BookIDtextBox";
-            this.BookIDtextBox.Size = new System.Drawing.Size(367, 29);
-            this.BookIDtextBox.TabIndex = 3;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(312, 28);
+            this.label2.Location = new System.Drawing.Point(167, 22);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(168, 24);
             this.label2.TabIndex = 4;
@@ -96,7 +75,7 @@ namespace ProjectLIB
             // ReasonTextBox
             // 
             this.ReasonTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ReasonTextBox.Location = new System.Drawing.Point(231, 215);
+            this.ReasonTextBox.Location = new System.Drawing.Point(79, 118);
             this.ReasonTextBox.Multiline = true;
             this.ReasonTextBox.Name = "ReasonTextBox";
             this.ReasonTextBox.Size = new System.Drawing.Size(367, 171);
@@ -106,7 +85,7 @@ namespace ProjectLIB
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(12, 215);
+            this.label3.Location = new System.Drawing.Point(159, 77);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(176, 24);
             this.label3.TabIndex = 6;
@@ -117,14 +96,12 @@ namespace ProjectLIB
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 565);
+            this.ClientSize = new System.Drawing.Size(549, 447);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.ReasonTextBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.BookIDtextBox);
             this.Controls.Add(this.Backbutton);
             this.Controls.Add(this.DeleteButton);
-            this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "DeleteBook";
             this.Text = "DeleteBook";
@@ -134,11 +111,8 @@ namespace ProjectLIB
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button Backbutton;
-        private System.Windows.Forms.TextBox BookIDtextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox ReasonTextBox;
         private System.Windows.Forms.Label label3;

@@ -7,12 +7,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Printing;
+
 
 
 
@@ -26,6 +28,7 @@ namespace ProjectLIB
         private Book _bookToPrint = null;
         private Queue<byte[]> _qrCodesToPrintQueue = new Queue<byte[]>();
         private Queue<Book> _booksForPrintInfoQueue = new Queue<Book>();
+        private SerialPort serialPort;
 
 
         public Form ReturnForm;
@@ -36,6 +39,7 @@ namespace ProjectLIB
         }
         public MenuLib(string FullName)
         {
+            InitializeAndOpenSerialPort("COM7", 9600);
             InitializeComponent();
             LoadData(_db.GetAllBooksWithQrDetails());
             LoadDataForReaders(_db.GetUsers());
@@ -121,9 +125,7 @@ namespace ProjectLIB
         private void FillDataGridView(List<Book> books)
         {
 
-            DataGridViewCheckBoxColumn selectColumn = new DataGridViewCheckBoxColumn();
-            selectColumn.Name = "Select";
-            selectColumn.HeaderText = "Выбрать";
+            DataGridViewCheckBoxColumn selectColumn = new DataGridViewCheckBoxColumn() {Name = "Select", HeaderText = "Выбрать" };
             dataGridView1.Columns.Add(selectColumn);
 
             DataGridViewTextBoxColumn bookIdColumn = new DataGridViewTextBoxColumn();
@@ -507,7 +509,13 @@ namespace ProjectLIB
         }
         private void DeleteBookButton_Click(object sender, EventArgs e)
         {
-            DeleteBook book = new DeleteBook();
+            List<int> selectedBookId = GetSelectedBookIds();
+            if (selectedBookId.Count() != 1)
+            {
+                MessageBox.Show($"Количество выбранных книг больше 1", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            DeleteBook book = new DeleteBook(selectedBookId[0]);
             book.ShowDialog();
             LoadData(_db.GetAllBooksWithQrDetails());
         }
@@ -654,8 +662,6 @@ namespace ProjectLIB
 
                     if (book != null)
                     {
-                       
-                        
                             byte[] qrCodeBytes = GenerateQrCodeBytes(bookId);
                             if (qrCodeBytes == null)
                             {
@@ -789,6 +795,9 @@ namespace ProjectLIB
                 {
                     MessageBox.Show("Печать завершена!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+                _qrCodesToPrintQueue.Clear();
+                _booksForPrintInfoQueue.Clear();
+
             }
         }
 
@@ -835,6 +844,61 @@ namespace ProjectLIB
         {
             LoadDataForReaders(_db.GetUsers());
         }
+        private void InitializeAndOpenSerialPort(string portName, int baudRate)
+        {
+            serialPort = new SerialPort();
+            serialPort.PortName = portName;
+            serialPort.BaudRate = baudRate;
+            serialPort.Parity = Parity.None;
+            serialPort.StopBits = StopBits.One;
+            serialPort.DataBits = 8;
+            serialPort.Handshake = Handshake.None;
+            serialPort.DataReceived += DataReceivedHandler;
+
+            try
+            {
+                serialPort.Open();
+                MessageBox.Show("COM-порт " + portName + " успешно открыт.");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Сканер не подключён");
+            }
+        }
+
+        private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
+        {
+            string data = serialPort.ReadExisting().Trim();
+            const string Prefix = "EduLib_B_ID: ";
+            this.Invoke((MethodInvoker)delegate
+            {
+                MessageBox.Show("Считанный QR-код: " + data);
+                if (data.StartsWith(Prefix))
+                {
+                    int bookID = int.Parse(data.Substring(Prefix.Length));
+                    Book book_info = _db.GetBookById(bookID);
+                    Console.WriteLine(bookID);
+                    if (book_info != null)
+                    {
+                        QrCodeSession book = new QrCodeSession(book_info);
+                        book.ShowDialog();
+                        LoadData(_db.GetAllBooksWithQrDetails());
+                    }
+                    else
+                    {
+                        MessageBox.Show("Информация о книге не найдена");
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Данный Qr код не из этой системы");
+                    return;
+                }
+
+            });
+        }
+
     }
 
 }

@@ -101,3 +101,6 @@ D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.csproj.Up2Date
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.exe
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.pdb
 D:\Libra\Libra\ProjectLIB\bin\Debug\QRCoder.dll
+D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.QrCodeSession.resources
+D:\Libra\Libra\ProjectLIB\bin\Debug\BCrypt.Net-Next.dll
+D:\Libra\Libra\ProjectLIB\bin\Debug\BCrypt.Net-Next.xml

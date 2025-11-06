@@ -13,7 +13,7 @@ namespace ProjectLIB
 {
     public partial class Authorization : Form 
     {
-
+        private DB _db = new DB();
         public Authorization() 
         {
             InitializeComponent();
@@ -28,8 +28,8 @@ namespace ProjectLIB
         {
             string username = usernameTextBox.Text;
             string password = passwordTextBox.Text;
-            User current = new User();
-            current = current.FindUserByLogin(username, password);
+            User current = _db.FindUserByLogin(username, password);
+            Console.WriteLine(BCrypt.Net.BCrypt.HashPassword(password));
             if (current!=null)
             {
                 if (current.Role != 2)
@@ -40,7 +40,7 @@ namespace ProjectLIB
                     }
                     else 
                     {
-                        (string FullName, string group) = current.GetFullNameAndGroupById(current.Id);
+                        (string FullName, string group) = _db.GetFullNameAndGroupById(current.Id);
                         this.Hide();
                         MenuLib menu = new MenuLib(FullName);
                         menu.FormClosed += (object s, FormClosedEventArgs ev) => { this.Show(); };

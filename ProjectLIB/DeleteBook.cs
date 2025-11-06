@@ -14,10 +14,12 @@ namespace ProjectLIB
     public partial class DeleteBook : Form
     {
         private DB _db = new DB();
-        public DeleteBook()
+        private int BookID;
+        public DeleteBook(int book_id)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+            BookID = book_id;
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -25,7 +27,6 @@ namespace ProjectLIB
             
             try
             {
-                int BookID = int.Parse(BookIDtextBox.Text);
                 string Reason = ReasonTextBox.Text;
                 if (BookID <= 0)
                 {
