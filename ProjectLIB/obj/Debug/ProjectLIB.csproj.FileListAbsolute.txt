@@ -93,8 +93,6 @@ D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.GiveOutBooks.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.MenuLib.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.Properties.Resources.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.ReturnBook.resources
-D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.Search.resources
-D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.Selector.resources
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.csproj.GenerateResource.cache
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.csproj.CoreCompileInputs.cache
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.csproj.Up2Date
@@ -104,3 +102,7 @@ D:\Libra\Libra\ProjectLIB\bin\Debug\QRCoder.dll
 D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.QrCodeSession.resources
 D:\Libra\Libra\ProjectLIB\bin\Debug\BCrypt.Net-Next.dll
 D:\Libra\Libra\ProjectLIB\bin\Debug\BCrypt.Net-Next.xml
+D:\Libra\Libra\ProjectLIB\bin\Debug\ProjectLIB.exe.manifest
+D:\Libra\Libra\ProjectLIB\bin\Debug\ProjectLIB.application
+D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.exe.manifest
+D:\Libra\Libra\ProjectLIB\obj\Debug\ProjectLIB.application
